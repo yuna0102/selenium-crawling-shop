@@ -10,7 +10,18 @@ options.add_argument("no-sandbox")
 chrome = webdriver.Chrome("./chromedriver.exe", options=options)
 chrome.get("http://shopping.naver.com")
 wait = WebDriverWait(chrome, 10)
-#아래 코드의 반응값이 바로 element를 찾는 것임
-el = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "input[name=query]")))
-print(el)
+
+def find(wait, css_selector):
+    return wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, css_selector)))
+
+search = find(wait, "input[name=query]")
+search.send_keys("아이폰 케이스\n")
+
+time.sleep(3)
+
+# button = find(wait, "a.co_srh_btn")
+# button.click()
+
+# time.sleep(3)
+
 chrome.close()

@@ -45,26 +45,59 @@ search.send_keys("아이폰 케이스")
 time.sleep(1)
 search.send_keys("\n")
 
-#스크롤
-#정보의 양을 많게하고 싶으면 y좌표를 조정
-for i in range(10):
-    chrome.execute_script("window.scrollBy(0, "+ str((i+1) * 1000)+")")
-    time.sleep(1)
+# #스크롤
+# #정보의 양을 많게하고 싶으면 y좌표를 조정
+# #실제 사람이 하는 것처럼 조금씩 내리면서
+# for i in range(10):
+#     chrome.execute_script("window.scrollBy(0, "+ str((i+1) * 1000)+")")
+#     time.sleep(0.5)
 
 
-#리스트들을 돌기 기다리면서 
-wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "div[class^=basicList_info_area__]")))
-#리스트 제목을 다 가져와줌
-items = chrome.find_elements_by_css_selector("div[class^=basicList_info_area__]")
-for item in items:
-    #광고 빼기
-    try :
-        item.find_element_by_css_selector("button[class^=ad_]")
-        continue
-    except :
-        pass
-    print(item.find_element_by_css_selector("a[class^=basicList_link__]").text)
-chrome.close()
+# #리스트들을 돌기 기다리면서 
+# wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "div[class^=basicList_info_area__]")))
+# #리스트 제목을 다 가져와줌
+# items = chrome.find_elements_by_css_selector("div[class^=basicList_info_area__]")
+# for item in items:
+#     #광고 빼기
+#     try :
+#         item.find_element_by_css_selector("button[class^=ad_]")
+#         continue
+#     except :
+#         pass
+#     print(item.find_element_by_css_selector("a[class^=basicList_link__]").text)
+
+wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "a[class^=basicList_link__]"))).click()
+
+time.sleep(2)
+
+chrome.switch_to_window(chrome.window_handles[1])
+
+# #창 하나하나를 조종하겠다
+# print(chrome.window_handles)
+# print(chrome.title)
+
+wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "a[aria-haspopup='listbox']")))
+el1 = chrome.find_elements_by_css_selector("a[aria-haspopup='listbox']")
+
+#첫 번째 옵션
+el1[0].click()
+time.sleep(0.1)
+chrome.find_elements_by_css_selector("ul[role=listbox] a[role=option]")[0].click()
+
+# 두 번째 상품을 선택하고 싶은 경우
+# chrome.find_elements_by_css_selector("ul[role=listbox] li:nth-child(2) a[role=option]").click()
+
+# 두 번째 옵션
+el1[1].click()
+time.sleep(0.1)
+chrome.find_elements_by_css_selector("ul[role=listbox] a[role=option]")[0].click()
+time.sleep(5)
+
+#결제하기 버튼 누르기
+chrome.find_element_by_css_selector("li[class*='N=a:pcs.buy'] a").click()
+
+time.sleep(5)
+chrome.quit()
 
 # #선택자 불러오는 방법
 # a.logout_button
